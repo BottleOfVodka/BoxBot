@@ -4,7 +4,7 @@ print("Starting Bot...")
 print("Starting Discord Client")
 client = discord.Client()
 prefix = 'BB'
-prefix_alternative = ';'
+prefixalternative = ';'
 token = 'TOKEN'
 
 @client.event
@@ -14,22 +14,18 @@ async def on_ready():
     """
     print('Logged in as ' + client.user.name + " (" + client.user.id + ")")
 
-    # Change nickname to nickname in configuration
     for instance in client.servers:
-    await client.change_presence(game=discord.Game(name='Use ' + prefix + 'help or ' + prefix_alternative + 'help for help'))
-
+        await client.change_presence(game=discord.Game(name='Use ' + prefix + '/' + prefixalternative + 'help for a list of commands'))
 
 @client.event
 async def on_message(message):
-    """
-    Event handler, fires when a message is received in the server.
-    :param message: discord.Message object containing the received message
-    """
     try:
-        if message.content.startswith(prefix):
+        if message.content.startswith(prefix) or message.content.startswith(prefixalternative):
             await client.send_message(message.channel, 'debug')
         if message.server is None:
-            await client.send_message(message.channel, 'Sorry, ' + client.user.name + 'can't be used in DMs)
+            await client.send_message(message.channel, 'Sorry, ' + client.user.name + 'cannot be used in DMs')
+    except:
+        pass
 
 @client.event
 async def on_member_join(member):
